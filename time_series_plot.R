@@ -9,6 +9,7 @@ tree_rings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience
 # load volcano eruption data
 eruptions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/eruptions.csv')
 
+
 # first, produce the temperature anomalie plot
 ggplot(tree_rings, aes(year, europe_temp_index)) + 
   geom_line(aes(colour = europe_temp_index)) +
@@ -18,4 +19,12 @@ ggplot(tree_rings, aes(year, europe_temp_index)) +
   theme_minimal() +
   theme(legend.position = "none")
 
-# then the 
+# then the Volcano Explosivity Index (0-8)
+eruptions_large <- eruptions %>% 
+  # select only only the worst eruptions (>= large) 
+  # and subset it to the same range as temp-data
+  filter(vei >= 6 & start_year >= 0 & start_year <= 2000)
+
+ggplot(eruptions_large) +
+  geom_point(aes(start_year, y = 0, size = vei), alpha = 0.2)
+
